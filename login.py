@@ -10,6 +10,7 @@ from mysql.connector.errors import Error
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QIcon, QPixmap
 
 
 class Ui_MainWindow(object):
@@ -19,9 +20,11 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.Logo = QtWidgets.QLabel(self.centralwidget)
-        self.Logo.setGeometry(QtCore.QRect(310, 50, 111, 71))
+        self.Logo.setGeometry(QtCore.QRect(320, 20, 100, 110))
         self.Logo.setText("")
         self.Logo.setObjectName("Logo")
+        pixmap = QPixmap('faceAttend.png')
+        self.Logo.setPixmap(pixmap)
         self.Loginbutton = QtWidgets.QPushButton(self.centralwidget)
         self.Loginbutton.setGeometry(QtCore.QRect(330, 220, 61, 21))
         self.Loginbutton.setObjectName("Loginbutton")

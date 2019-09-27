@@ -8,7 +8,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5.QtGui import QIcon, QPixmap
 
 class Ui_dash(object):
     def setupUi(self, dash):
@@ -17,9 +17,11 @@ class Ui_dash(object):
         dash.resize(802, 572)
         dash.setAutoFillBackground(False)
         self.logo = QtWidgets.QLabel(dash)
-        self.logo.setGeometry(QtCore.QRect(350, 50, 91, 81))
+        self.logo.setGeometry(QtCore.QRect(340, 20, 100, 136))
         self.logo.setText("")
         self.logo.setObjectName("logo")
+        pixmap = QPixmap('AttendPic.png')
+        self.logo.setPixmap(pixmap)
         self.semester = QtWidgets.QComboBox(dash)
         self.semester.setGeometry(QtCore.QRect(330, 210, 131, 21))
         self.semester.setObjectName("semester")

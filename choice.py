@@ -8,7 +8,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5.QtGui import QIcon, QPixmap
 
 class Ui_Attendance(object):
     def setupUi(self, Attendance):
@@ -16,9 +16,11 @@ class Ui_Attendance(object):
         Attendance.setWindowModality(QtCore.Qt.WindowModal)
         Attendance.resize(815, 583)
         self.logo = QtWidgets.QLabel(Attendance)
-        self.logo.setGeometry(QtCore.QRect(350, 170, 91, 71))
+        self.logo.setGeometry(QtCore.QRect(340, 150, 100, 100))
         self.logo.setText("")
         self.logo.setObjectName("logo")
+        pixmap = QPixmap('Cam.png')
+        self.logo.setPixmap(pixmap)
         self.Heading = QtWidgets.QLabel(Attendance)
         self.Heading.setGeometry(QtCore.QRect(330, 90, 141, 41))
         font = QtGui.QFont()
