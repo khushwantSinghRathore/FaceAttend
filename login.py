@@ -6,8 +6,9 @@
 #
 # WARNING! All changes made in this file will be lost!
 import  mysql.connector
-from mysql.connector.errors import Error
 
+from dashboard import Ui_dash
+from errdilog import Ui_Dialog
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon, QPixmap
@@ -73,14 +74,21 @@ class Ui_MainWindow(object):
                 print(x)
                 count = count + 1
         except Exception as e:
-            raise(e)
+            self.dilog = QtWidgets.QDialog()
+            self.dl = Ui_Dialog()
+            self.dl.setupUi(self.dilog)
+            self.dilog.show()
         finally:
             mydb.close()
         print(count)
         if count == 1:
-            print("login details correct")
-        else:
-            print("login details incorrect")
+            self.window  = QtWidgets.QMainWindow()
+            self.ui  = Ui_dash()
+            self.ui.setupUi(self.window)
+            MainWindow.hide()
+            self.window.show()
+
+
 
 
 if __name__ == "__main__":

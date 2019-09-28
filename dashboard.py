@@ -9,6 +9,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon, QPixmap
+from choice import  Ui_Attendance
 
 class Ui_dash(object):
     def setupUi(self, dash):
@@ -66,6 +67,11 @@ class Ui_dash(object):
     def TakeAt(self):
         semes = self.semester.currentText()
         print(semes)
+        self.window =   QtWidgets.QMainWindow()
+        self.ui = Ui_Attendance()
+        self.ui.setupUi(self.window)
+        self.window.show()
+
 
 
     def UpdateAt(self):
