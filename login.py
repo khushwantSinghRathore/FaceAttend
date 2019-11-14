@@ -67,7 +67,7 @@ class Ui_MainWindow(object):
                 passwd=""
             )
             mycursor = mydb.cursor()
-            mycursor.execute("""SELECT name FROM credentials.userdata where name = %s and pass = %s""",(userName, passwd,))
+            mycursor.execute("""SELECT userid FROM collegeattend.userdatabase where userid = %s and pass = %s""",(userName, passwd,))
             myresult = mycursor.fetchone()
             count = 0
             for x in  myresult :
@@ -83,7 +83,7 @@ class Ui_MainWindow(object):
         print(count)
         if count == 1:
             self.window  = QtWidgets.QMainWindow()
-            self.ui  = Ui_dash()
+            self.ui  = Ui_dash(userName)
             self.ui.setupUi(self.window)
             MainWindow.hide()
             self.window.show()

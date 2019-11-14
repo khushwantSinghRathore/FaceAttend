@@ -5,12 +5,17 @@
 # Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
-
-
+import mysql
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon, QPixmap
+from attendance import  Ui_Form
 
 class Ui_Attendance(object):
+    def __init__(self,username,semes):
+        self.username = username
+        self.semes = semes
+
+
     def setupUi(self, Attendance):
         Attendance.setObjectName("Attendance")
         Attendance.setWindowModality(QtCore.Qt.WindowModal)
@@ -49,8 +54,8 @@ class Ui_Attendance(object):
         self.retranslateUi(Attendance)
         QtCore.QMetaObject.connectSlotsByName(Attendance)
 
-
-
+        self.OpenCam.clicked.connect(self.FaceCamera)
+        self.TakeManual.clicked.connect(self.TakeAttend)
 
     def retranslateUi(self, Attendance):
         _translate = QtCore.QCoreApplication.translate
@@ -61,6 +66,28 @@ class Ui_Attendance(object):
 
 
 
+    def FaceCamera(self):
+        print(self.username)
+        print(self.semes)
+
+    def TakeAttend(self):
+
+        mydb = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            passwd=""
+        )
+        mycursor = mydb.cursor()
+        mycursor.execute("""SELECT semestername FROM collegeattend.collgdatatable WHERE %s IN(subject1,subject2,
+                subject3,subject4,subject5,subject6,subject7)""", (self.semes,))
+        myresult = mycursor.fetchone()
+        for row in myresult:
+            sem = row
+            print(sem)
+        self.window = QtWidgets.QMainWindow()
+        self.ui = Ui_Form(self.username,sem)
+        self.ui.setupUi(self.window)
+        self.window.show()
 
 
 

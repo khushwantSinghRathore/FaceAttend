@@ -5,16 +5,20 @@
 # Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
-
-
+import mysql.connector
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon, QPixmap
 from choice import  Ui_Attendance
+from  UpdateAttd import Ui_UpdateAttend
 
 class Ui_dash(object):
+
+    def __init__(self,userName):
+       self.username = userName
+
+
     def setupUi(self, dash):
         dash.setObjectName("dash")
-        dash.setWindowModality(QtCore.Qt.ApplicationModal)
         dash.resize(802, 572)
         dash.setAutoFillBackground(False)
         self.logo = QtWidgets.QLabel(dash)
@@ -26,12 +30,6 @@ class Ui_dash(object):
         self.semester = QtWidgets.QComboBox(dash)
         self.semester.setGeometry(QtCore.QRect(330, 210, 131, 21))
         self.semester.setObjectName("semester")
-        self.semester.addItem("")
-        self.semester.addItem("")
-        self.semester.addItem("")
-        self.semester.addItem("")
-        self.semester.addItem("")
-        self.semester.addItem("")
         self.label = QtWidgets.QLabel(dash)
         self.label.setGeometry(QtCore.QRect(340, 170, 111, 21))
         font = QtGui.QFont()
@@ -46,6 +44,7 @@ class Ui_dash(object):
         self.updateA.setObjectName("updateA")
 
         self.retranslateUi(dash)
+        self.tech()
         QtCore.QMetaObject.connectSlotsByName(dash)
 
         self.takeA.clicked.connect(self.TakeAt)
@@ -54,12 +53,6 @@ class Ui_dash(object):
     def retranslateUi(self, dash):
         _translate = QtCore.QCoreApplication.translate
         dash.setWindowTitle(_translate("dash", "Dashboard"))
-        self.semester.setItemText(0, _translate("dash", "MCA 1"))
-        self.semester.setItemText(1, _translate("dash", "MCA 2"))
-        self.semester.setItemText(2, _translate("dash", "MCA 3"))
-        self.semester.setItemText(3, _translate("dash", "MCA 4"))
-        self.semester.setItemText(4, _translate("dash", "MCA 5"))
-        self.semester.setItemText(5, _translate("dash", "MCA 6"))
         self.label.setText(_translate("dash", "Select Semester"))
         self.takeA.setText(_translate("dash", "Take Attendance"))
         self.updateA.setText(_translate("dash", "Update Attendance"))
@@ -67,8 +60,9 @@ class Ui_dash(object):
     def TakeAt(self):
         semes = self.semester.currentText()
         print(semes)
+
         self.window =   QtWidgets.QMainWindow()
-        self.ui = Ui_Attendance()
+        self.ui = Ui_Attendance(self.username,semes)
         self.ui.setupUi(self.window)
         self.window.show()
 
@@ -77,6 +71,24 @@ class Ui_dash(object):
     def UpdateAt(self):
         seme = self.semester.currentText()
         print(seme)
+        self.window = QtWidgets.QMainWindow()
+        self.ui = Ui_UpdateAttend(self.username)
+        self.ui.setupUi(self.window)
+        self.window.show()
+
+    def tech(self):
+        mydb = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            passwd=""
+        )
+        mycursor = mydb.cursor()
+        mycursor.execute("""SELECT * FROM collegeattend.subjectteacher where teacherid = %s""",(self.username,))
+        myresult = mycursor.fetchone()
+        for row in myresult:
+            if row!=self.username:
+                if row :
+                    self.semester.addItem(row)
 
 
 if __name__ == "__main__":
