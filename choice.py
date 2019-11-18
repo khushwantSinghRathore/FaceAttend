@@ -11,9 +11,9 @@ from PyQt5.QtGui import QIcon, QPixmap
 from attendance import  Ui_Form
 
 class Ui_Attendance(object):
-    def __init__(self,username,semes):
+    def __init__(self,username,sub):
         self.username = username
-        self.semes = semes
+        self.sub = sub
 
 
     def setupUi(self, Attendance):
@@ -68,7 +68,7 @@ class Ui_Attendance(object):
 
     def FaceCamera(self):
         print(self.username)
-        print(self.semes)
+        print(self.sub)
 
     def TakeAttend(self):
 
@@ -79,13 +79,13 @@ class Ui_Attendance(object):
         )
         mycursor = mydb.cursor()
         mycursor.execute("""SELECT semestername FROM collegeattend.collgdatatable WHERE %s IN(subject1,subject2,
-                subject3,subject4,subject5,subject6,subject7)""", (self.semes,))
+                subject3,subject4,subject5,subject6,subject7)""", (self.sub,))
         myresult = mycursor.fetchone()
         for row in myresult:
             sem = row
             print(sem)
         self.window = QtWidgets.QMainWindow()
-        self.ui = Ui_Form(self.username,sem)
+        self.ui = Ui_Form(self.username,sem,self.sub)
         self.ui.setupUi(self.window)
         self.window.show()
 

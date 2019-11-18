@@ -12,7 +12,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_UpdateAttend(object):
     def __init__(self,username):
         self.username = username
-
+        self.SemesterChoice = QtWidgets.QComboBox()
+        self.SelectedDate = QtWidgets.QComboBox()
         print(username)
 
 
@@ -30,9 +31,12 @@ class Ui_UpdateAttend(object):
         self.SemesterChoice = QtWidgets.QComboBox(UpdateAttend)
         self.SemesterChoice.setGeometry(QtCore.QRect(330, 140, 111, 21))
         self.SemesterChoice.setObjectName("SemesterChoice")
-        self.SelectedDate = QtWidgets.QDateEdit(UpdateAttend)
-        self.SelectedDate.setGeometry(QtCore.QRect(330, 290, 110, 22))
+        self.SelectedDate = QtWidgets.QComboBox(UpdateAttend)
+        self.SelectedDate.setGeometry(QtCore.QRect(330, 290, 111, 21))
         self.SelectedDate.setObjectName("SelectedDate")
+        self.pushButton = QtWidgets.QPushButton(UpdateAttend)
+        self.pushButton.setGeometry(QtCore.QRect(340, 360, 81, 21))
+        self.pushButton.setObjectName("pushButton")
         self.DateLabel = QtWidgets.QLabel(UpdateAttend)
         self.DateLabel.setGeometry(QtCore.QRect(340, 240, 81, 21))
         font = QtGui.QFont()
@@ -45,13 +49,15 @@ class Ui_UpdateAttend(object):
         self.retranslateUi(UpdateAttend)
         self.tecupd()
         QtCore.QMetaObject.connectSlotsByName(UpdateAttend)
-
+        self.SemesterChoice.currentTextChanged.connect(self.dateUpdate)
+        # self.SemesterChoice.changeEvent()
 
     def retranslateUi(self, UpdateAttend):
         _translate = QtCore.QCoreApplication.translate
         UpdateAttend.setWindowTitle(_translate("UpdateAttend", "Form"))
         self.semesterLabel.setText(_translate("UpdateAttend", "Select Semester"))
         self.DateLabel.setText(_translate("UpdateAttend", "Select Date"))
+        self.pushButton.setText(_translate("UpdateAttend", "Update"))
 
     def tecupd(self):
             mydb = mysql.connector.connect(
@@ -66,6 +72,28 @@ class Ui_UpdateAttend(object):
                 if row != self.username:
                     if row:
                         self.SemesterChoice.addItem(row)
+
+
+    def dateUpdate(self,newValue):
+        print(newValue)
+        connection  = mysql.connector.connect(
+            host="localhost",
+            database="collegeattend",
+            user="root",
+            passwd=""
+        )
+        cursor = connection.cursor()
+        sql = "SELECT classdate FROM `"+str(newValue)+"` ORDER BY classdate ASC"
+        print(sql)
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        self.SelectedDate.clear()
+        for i in result:
+            print(i[0])
+            self.SelectedDate.addItem(str(i[0]))
+
+
+
 
 
 if __name__ == "__main__":

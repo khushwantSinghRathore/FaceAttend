@@ -67,13 +67,14 @@ class Ui_MainWindow(object):
                 passwd=""
             )
             mycursor = mydb.cursor()
-            mycursor.execute("""SELECT userid FROM collegeattend.userdatabase where userid = %s and pass = %s""",(userName, passwd,))
+            mycursor.execute("SELECT userid FROM collegeattend.userdatabase where userid = %s and pass = %s",(userName, passwd,))
             myresult = mycursor.fetchone()
             count = 0
             for x in  myresult :
                 print(x)
                 count = count + 1
         except Exception as e:
+            print(e)
             self.dilog = QtWidgets.QDialog()
             self.dl = Ui_Dialog()
             self.dl.setupUi(self.dilog)

@@ -58,11 +58,11 @@ class Ui_dash(object):
         self.updateA.setText(_translate("dash", "Update Attendance"))
 
     def TakeAt(self):
-        semes = self.semester.currentText()
-        print(semes)
+        sub = self.semester.currentText()
+        print(sub)
 
         self.window =   QtWidgets.QMainWindow()
-        self.ui = Ui_Attendance(self.username,semes)
+        self.ui = Ui_Attendance(self.username,sub)
         self.ui.setupUi(self.window)
         self.window.show()
 

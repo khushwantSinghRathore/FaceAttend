@@ -6,15 +6,17 @@
 #
 # WARNING! All changes made in this file will be lost!
 import  mysql.connector
-
+import os
+from datetime import date
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon, QPixmap
 
 
 class Ui_Form(object):
-    def __init__(self,username,sem):
+    def __init__(self,username,sem,sub):
         self.username = username
         self.sem = sem
+        self.sub = sub
 
 
     def setupUi(self, Form):
@@ -126,6 +128,10 @@ class Ui_Form(object):
         self.c9 = QtWidgets.QCheckBox(Form)
         self.c9.setGeometry(QtCore.QRect(360, 450, 70, 17))
         self.c9.setObjectName("c9")
+        self.submit = QtWidgets.QPushButton(Form)
+        self.submit.setGeometry(QtCore.QRect(250, 500, 111, 23))
+        self.submit.setObjectName("submit")
+
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -135,6 +141,7 @@ class Ui_Form(object):
         self.cb[2].stateChanged.connect(lambda:self.checking(2))
         self.cb[3].stateChanged.connect(lambda:self.checking(3))
         self.cb[4].stateChanged.connect(lambda:self.checking(4))
+        self.submit.clicked.connect(self.takingAttend)
 
 
 
@@ -163,9 +170,11 @@ class Ui_Form(object):
         self.roll3.setText(_translate("Form", "RollNum :"))
         self.roll6.setText(_translate("Form", "RollNum :"))
         self.c9.setText(_translate("Form", "Roll No: 9"))
+        self.submit.setText(_translate("MainWindow", "Submit Attendance"))
         self.cb = [self.c1, self.c2, self.c3, self.c4, self.c5, self.c6, self.c7, self.c8, self.c9, self.c10]
         self.pixx = [self.pic1,self.pic2,self.pic3,self.pic4,self.pic5,self.pic6,self.pic7,self.pic8,self.pic9,self.pic10]
         self.rollarr = [self.roll1,self.roll2,self.roll3,self.roll4,self.roll5,self.roll6,self.roll7,self.roll8,self.roll9,self.roll10]
+        self.attendance = [0,0,0,0,0,0,0,0,0,0,0]
 
     def loadingdata(self):
         rollarr = ["roll1","roll2","roll3","roll4","roll5","roll6","roll7","roll8","roll9","roll10"]
@@ -211,9 +220,44 @@ class Ui_Form(object):
             if  self.cb[x].isChecked() == True:
                 self.cb[x].setText("Is Present")
                 self.cb[x].setStyleSheet("color: Green")
+                self.attendance[x] = 1
             else:
                 self.cb[x].setText("Is Absent")
                 self.cb[x].setStyleSheet("color: red")
+                self.attendance[x] = 0
+
+    def takingAttend(self):
+        today = date.today()
+        self.attendance[10] = today
+        # print("Today's date:", self.attendance[10])
+        # print(self.sub)
+        # for j in range(11):
+        #     print(self.attendance[j])
+        try:
+            connection = mysql.connector.connect(host='localhost',
+                                                 database='collegeattend',
+                                                 user='root',
+                                                 password='')
+            cursor = connection.cursor()
+            string = "(`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `classdate`)"
+            tab = "`" + str(self.sub) + "`" + string
+            print(tab)
+            cursor.execute("INSERT INTO "+ str(tab) +" VALUES (%s, %s, %s, %s,%s, %s, %s, %s,%s, %s, %s)",(self.attendance[0],self.attendance[1],self.attendance[2],self.attendance[3],self.attendance[4],self.attendance[5],self.attendance[6],self.attendance[7],self.attendance[8],self.attendance[9],self.attendance[10],))
+            connection.commit()
+
+
+
+            print("Record inserted successfully into "+ str(tab) + "table")
+
+        except mysql.connector.Error as error:
+            print("Failed to insert into MySQL table {}".format(error))
+
+        finally:
+            if (connection.is_connected()):
+                cursor.close()
+                connection.close()
+                print("MySQL connection is closed")
+
 
 
 
