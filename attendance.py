@@ -6,7 +6,6 @@
 #
 # WARNING! All changes made in this file will be lost!
 import  mysql.connector
-import os
 from datetime import date
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon, QPixmap

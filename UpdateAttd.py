@@ -7,7 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 import mysql.connector
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from realattend import  Ui_Updation
 
 class Ui_UpdateAttend(object):
     def __init__(self,username):
@@ -50,7 +50,7 @@ class Ui_UpdateAttend(object):
         self.tecupd()
         QtCore.QMetaObject.connectSlotsByName(UpdateAttend)
         self.SemesterChoice.currentTextChanged.connect(self.dateUpdate)
-        # self.SemesterChoice.changeEvent()
+        self.pushButton.clicked.connect(self.buttonfuction)
 
     def retranslateUi(self, UpdateAttend):
         _translate = QtCore.QCoreApplication.translate
@@ -76,6 +76,7 @@ class Ui_UpdateAttend(object):
 
     def dateUpdate(self,newValue):
         print(newValue)
+        self.newValue = newValue
         connection  = mysql.connector.connect(
             host="localhost",
             database="collegeattend",
@@ -92,7 +93,25 @@ class Ui_UpdateAttend(object):
             print(i[0])
             self.SelectedDate.addItem(str(i[0]))
 
-
+    def buttonfuction(self):
+        clasdate = self.SelectedDate.currentText()
+        print(str(clasdate))
+        mydb = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            passwd=""
+        )
+        mycursor = mydb.cursor()
+        mycursor.execute("""SELECT semestername FROM collegeattend.collgdatatable WHERE %s IN(subject1,subject2,
+                        subject3,subject4,subject5,subject6,subject7)""", (self.newValue,))
+        myresult = mycursor.fetchone()
+        for row in myresult:
+            sem = row
+            print(sem)
+        self.window = QtWidgets.QMainWindow()
+        self.ui = Ui_Updation(self.username, sem, self.newValue,clasdate,)
+        self.ui.setupUi(self.window)
+        self.window.show()
 
 
 

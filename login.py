@@ -6,7 +6,6 @@
 #
 # WARNING! All changes made in this file will be lost!
 import  mysql.connector
-
 from dashboard import Ui_dash
 from errdilog import Ui_Dialog
 
@@ -48,6 +47,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.Loginbutton.clicked.connect(self.checked)
+        self.password.returnPressed.connect(self.checked)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -59,6 +59,7 @@ class Ui_MainWindow(object):
         passwd = self.password.text()
         print(userName)
         print(passwd)
+
 
         try:
             mydb = mysql.connector.connect(
@@ -80,6 +81,7 @@ class Ui_MainWindow(object):
             self.dl.setupUi(self.dilog)
             self.dilog.show()
         finally:
+
             mydb.close()
         print(count)
         if count == 1:
