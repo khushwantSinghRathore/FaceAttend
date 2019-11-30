@@ -8,14 +8,14 @@
 import mysql.connector
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon, QPixmap
-from choice import  Ui_Attendance
-from  UpdateAttd import Ui_UpdateAttend
+from choice import Ui_Attendance
+from UpdateAttd import Ui_UpdateAttend
+
 
 class Ui_dash(object):
 
-    def __init__(self,userName):
-       self.username = userName
-
+    def __init__(self, userName):
+        self.username = userName
 
     def setupUi(self, dash):
         dash.setObjectName("dash")
@@ -61,12 +61,10 @@ class Ui_dash(object):
         sub = self.semester.currentText()
         print(sub)
 
-        self.window =   QtWidgets.QMainWindow()
-        self.ui = Ui_Attendance(self.username,sub)
+        self.window = QtWidgets.QMainWindow()
+        self.ui = Ui_Attendance(self.username, sub)
         self.ui.setupUi(self.window)
         self.window.show()
-
-
 
     def UpdateAt(self):
         seme = self.semester.currentText()
@@ -83,16 +81,17 @@ class Ui_dash(object):
             passwd=""
         )
         mycursor = mydb.cursor()
-        mycursor.execute("""SELECT * FROM collegeattend.subjectteacher where teacherid = %s""",(self.username,))
+        mycursor.execute("""SELECT * FROM collegeattend.subjectteacher where teacherid = %s""", (self.username,))
         myresult = mycursor.fetchone()
         for row in myresult:
-            if row!=self.username:
-                if row :
+            if row != self.username:
+                if row:
                     self.semester.addItem(row)
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     dash = QtWidgets.QWidget()
     ui = Ui_dash()

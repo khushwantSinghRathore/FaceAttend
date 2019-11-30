@@ -5,7 +5,7 @@
 # Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
-import  mysql.connector
+import mysql.connector
 from datetime import date
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon, QPixmap
@@ -183,7 +183,7 @@ class Ui_Form(object):
             passwd=""
         )
         mycursor = mydb.cursor()
-        mycursor.execute("""SELECT rollnum,name,pic FROM collegeattend.studentdetails WHERE  semester = %s order by rollnum""",(self.sem,))
+        mycursor.execute("SELECT s_roll, s_name, s_img FROM collegeattend.studentdetails WHERE s_sem = "+self.sem+"order by s_roll")
         myresult = mycursor.fetchall()
         i = 0
         pixmap1 = []
@@ -197,22 +197,6 @@ class Ui_Form(object):
             self.rollarr[i].setText(namearr[i])
             i = i + 1
 
-        # self.pic1.setPixmap(pixmap1[0])
-        # self.pic2.setPixmap(pixmap1[1])
-        # self.pic3.setPixmap(pixmap1[2])
-        # self.pic4.setPixmap(pixmap1[3])
-        # self.pic5.setPixmap(pixmap1[4])
-        # self.pic6.setPixmap(pixmap1[5])
-        # self.pic7.setPixmap(pixmap1[6])
-        # self.pic8.setPixmap(pixmap1[7])
-        # self.pic9.setPixmap(pixmap1[8])
-        # self.pic10.setPixmap(pixmap1[9])
-
-        # self.roll1.setText(namearr[0])
-        # self.roll2.setText(namearr[1])
-        # self.roll3.setText(namearr[2])
-        # self.roll4.setText(namearr[3])
-        # self.roll5.setText(namearr[4])
         print(i)
 
     def checking(self,x):

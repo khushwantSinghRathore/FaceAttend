@@ -1,11 +1,4 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'untitled.ui'
-#
-# Created by: PyQt5 UI code generator 5.13.0
-#
-# WARNING! All changes made in this file will be lost!
-import  mysql.connector
+import mysql.connector
 from dashboard import Ui_dash
 from errdilog import Ui_Dialog
 
@@ -55,11 +48,11 @@ class Ui_MainWindow(object):
         self.Loginbutton.setText(_translate("MainWindow", "Login"))
 
     def checked(self):
+        global mydb
         userName = self.Userid.text()
         passwd = self.password.text()
         print(userName)
         print(passwd)
-
 
         try:
             mydb = mysql.connector.connect(
@@ -68,10 +61,11 @@ class Ui_MainWindow(object):
                 passwd=""
             )
             mycursor = mydb.cursor()
-            mycursor.execute("SELECT userid FROM collegeattend.userdatabase where userid = %s and pass = %s",(userName, passwd,))
+            mycursor.execute("SELECT userid FROM collegeattend.userdatabase where userid = %s and pass = %s",
+                             (userName, passwd,))
             myresult = mycursor.fetchone()
             count = 0
-            for x in  myresult :
+            for x in myresult:
                 print(x)
                 count = count + 1
         except Exception as e:
@@ -85,17 +79,16 @@ class Ui_MainWindow(object):
             mydb.close()
         print(count)
         if count == 1:
-            self.window  = QtWidgets.QMainWindow()
-            self.ui  = Ui_dash(userName)
+            self.window = QtWidgets.QMainWindow()
+            self.ui = Ui_dash(userName)
             self.ui.setupUi(self.window)
             MainWindow.hide()
             self.window.show()
 
 
-
-
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

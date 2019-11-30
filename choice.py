@@ -78,8 +78,13 @@ class Ui_Attendance(object):
             passwd=""
         )
         mycursor = mydb.cursor()
-        mycursor.execute("""SELECT semestername FROM collegeattend.collgdatatable WHERE %s IN(subject1,subject2,
-                subject3,subject4,subject5,subject6,subject7)""", (self.sub,))
+        mycursor.execute("SELECT semestername FROM collegeattend.collgdatatable WHERE " + self.sub + "IN (subject1, "
+                                                                                                     "subject2, "
+                                                                                                     "subject3, "
+                                                                                                     "subject4, "
+                                                                                                     "subject5, "
+                                                                                                     "subject6, "
+                                                                                                     "subject7")
         myresult = mycursor.fetchone()
         for row in myresult:
             sem = row
