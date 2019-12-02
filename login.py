@@ -6,6 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 import  mysql.connector
+import  hashlib
 from dashboard import Ui_dash
 from errdilog import Ui_Dialog
 
@@ -17,6 +18,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(780, 575)
+        MainWindow.setWindowFlags(QtCore.Qt.WindowCloseButtonHint | QtCore.Qt.WindowMinimizeButtonHint)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.Logo = QtWidgets.QLabel(self.centralwidget)
@@ -31,10 +33,12 @@ class Ui_MainWindow(object):
         self.Userid = QtWidgets.QLineEdit(self.centralwidget)
         self.Userid.setGeometry(QtCore.QRect(310, 150, 113, 20))
         self.Userid.setObjectName("Userid")
+        self.Userid.setPlaceholderText("UserId")
         self.password = QtWidgets.QLineEdit(self.centralwidget)
         self.password.setGeometry(QtCore.QRect(310, 180, 113, 20))
         self.password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.password.setObjectName("password")
+        self.password.setPlaceholderText("Password")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 780, 21))
@@ -43,7 +47,6 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.Loginbutton.clicked.connect(self.checked)
@@ -59,40 +62,34 @@ class Ui_MainWindow(object):
         passwd = self.password.text()
         print(userName)
         print(passwd)
-
-
+        pas = hashlib.sha1(str(self.password.text()).encode())
+        passwd = pas.hexdigest()
+        print(passwd)
         try:
             mydb = mysql.connector.connect(
                 host="localhost",
                 user="root",
+                database="collegeattend",
                 passwd=""
             )
             mycursor = mydb.cursor()
-            mycursor.execute("SELECT userid FROM collegeattend.userdatabase where userid = %s and pass = %s",(userName, passwd,))
+            mycursor.execute("SELECT userid FROM userdatabase where userid = %s and pass = %s",(userName, passwd,))
             myresult = mycursor.fetchone()
-            count = 0
-            for x in  myresult :
-                print(x)
-                count = count + 1
-        except Exception as e:
-            print(e)
-            self.dilog = QtWidgets.QDialog()
-            self.dl = Ui_Dialog()
-            self.dl.setupUi(self.dilog)
-            self.dilog.show()
-        finally:
-
-            mydb.close()
-        print(count)
-        if count == 1:
-            self.window  = QtWidgets.QMainWindow()
-            self.ui  = Ui_dash(userName)
-            self.ui.setupUi(self.window)
-            MainWindow.hide()
-            self.window.show()
-
-
-
+            if myresult is None:
+                self.dilog = QtWidgets.QDialog()
+                self.dl = Ui_Dialog()
+                self.dl.setupUi(self.dilog)
+                self.dilog.show()
+            else:
+                    self.window = QtWidgets.QMainWindow()
+                    self.ui = Ui_dash(userName)
+                    self.ui.setupUi(self.window)
+                    MainWindow.hide()
+                    self.window.show()
+        except mysql.connector.Error as e:
+            print(e.errno)
+            print(e.sqlstate)
+            print("Failed to insert into MySQL table {}".format(e))
 
 if __name__ == "__main__":
     import sys

@@ -41,36 +41,6 @@
      <height>21</height>
     </rect>
    </property>
-   <item>
-    <property name="text">
-     <string>MCA 1</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>MCA 2</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>MCA 3</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>MCA 4</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>MCA 5</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>MCA 6</string>
-    </property>
-   </item>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
@@ -87,7 +57,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Select Semester</string>
+    <string>Select Subject</string>
    </property>
   </widget>
   <widget class="QPushButton" name="takeA">

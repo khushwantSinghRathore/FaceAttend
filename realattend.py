@@ -10,6 +10,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon, QPixmap
 
 
+
 class Ui_Updation(object):
     def __init__(self,username,sem,sub,dat):
         self.username = username
